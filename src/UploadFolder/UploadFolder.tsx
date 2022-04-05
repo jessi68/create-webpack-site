@@ -1,32 +1,18 @@
 import "./UploadFolder.css";
 import React, { useState } from "react";
 import JSZip from "jszip";
+import { readContentsFromZipFolder } from "../util/folderAndFile";
 
 function UploadFolder() {
     const [selectedFolder, setSelectedFolder] = useState<File>();
     let folderName = "";
 
-    const unZipFolder =  (folder: File) => {
-        let zip = new JSZip();
-        let exampleFile: any;
-        console.log(folder);
-        folderName = folder.name;
-
-        const reader = new FileReader();
-
-        zip.loadAsync(folder!).then(function(zip) {
-              exampleFile = zip.files[0];
-              console.log(exampleFile);
-              console.log(zip);  
-        }).then(() => {
-            reader.readAsText(exampleFile);
-        });
-
-
+    const unZipFolder = async (folder: File) => {
+       readContentsFromZipFolder(folder);
     }
 
-    const onFileChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
-        unZipFolder(event.target.files![0]);
+    const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        await unZipFolder(event.target.files![0]);
         setSelectedFolder(event.target.files![0]);
     }
 

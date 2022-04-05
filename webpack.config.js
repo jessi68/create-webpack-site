@@ -1,8 +1,10 @@
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const webpack = require('webpack');
 const mode = process.env.NODE_ENV || 'development';
+const isProduction = false;
 
 module.exports = {
   mode,
@@ -45,5 +47,7 @@ module.exports = {
       template: './public/index.html',
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new ErrorOverlayPlugin()
   ],
+  devtool: isProduction ?'source-map' : 'inline-source-map'
 };
